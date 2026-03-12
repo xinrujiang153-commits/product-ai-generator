@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>AI商品详情页生成器</title>
+</head>
+
+<body>
+
+<h1>AI商品详情页生成器</h1>
+
+<p>输入商品链接：</p>
+
+<input id="link1" placeholder="商品链接1"><br><br>
+<input id="link2" placeholder="商品链接2"><br><br>
+<input id="link3" placeholder="商品链接3"><br><br>
+
+<button onclick="generate()">生成商品详情</button>
+
+<h2>生成结果</h2>
+
+<div id="result"></div>
+
+<script>
+
+async function generate(){
+
+let link1=document.getElementById("link1").value
+let link2=document.getElementById("link2").value
+let link3=document.getElementById("link3").value
+
+let result=document.getElementById("result")
+
+result.innerHTML="AI正在分析..."
+
+let prompt=`
+分析以下商品并生成：
+1 商品标题
+2 卖点
+3 图片设计建议
+4 定价建议
+
+商品链接：
+${link1}
+${link2}
+${link3}
+`
+
+let response=await fetch("/api/generate",{
+method:"POST",
+headers:{
+"Content-Type":"application/json"
+},
+body:JSON.stringify({prompt})
+})
+
+let data=await response.json()
+
+result.innerHTML=data.text
+
+}
+
+</script>
+
+</body>
+</html>
